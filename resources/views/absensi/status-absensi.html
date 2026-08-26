@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Presensi Hari Ini</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 max-w-md w-full p-6 text-center">
+        
+        <!-- Dynamic Status Tag -->
+        <div class="mt-2">
+            <span id="status-badge" class="inline-block font-semibold px-4 py-1.5 rounded-full text-sm">
+                <!-- Diisi via JavaScript -->
+            </span>
+        </div>
+
+        <h1 class="text-2xl font-bold text-slate-800 mt-4">Presensi Recorded!</h1>
+        <p class="text-sm text-slate-500 mt-1">Detail data presensi kamu untuk hari ini.</p>
+
+        <!-- Detail Information Card -->
+        <div class="mt-6 bg-slate-50 rounded-xl p-4 text-left border border-slate-100 space-y-3">
+            <div class="flex justify-between items-center text-sm">
+                <span class="text-slate-500">Waktu Presensi</span>
+                <span class="font-medium text-slate-700" id="waktu-absen">-</span>
+            </div>
+            <div class="flex justify-between items-center text-sm">
+                <span class="text-slate-500">Keterangan / Catatan</span>
+                <span class="font-medium text-slate-700" id="ket-absen">-</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 space-y-2">
+            <a href="/dashboard" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-xl transition shadow-sm text-sm">
+                Kembali ke Beranda
+            </a>
+            <button onclick="window.print()" class="block w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium py-2.5 rounded-xl transition text-sm">
+                Cetak Bukti Absen
+            </button>
+        </div>
+
+    </div>
+<script>
+const mockData = { status: 'sakit', timestamp: '07:30 WIB', note: 'Demam tinggi' };
+renderStatusPage(mockData);
+
+  function renderStatusPage(data) {
+    const statusConfig = {
+      hadir: { title: 'Hadir', bg: 'bg-emerald-100', text: 'text-emerald-700' },
+      sakit: { title: 'Sakit', bg: 'bg-blue-100', text: 'text-blue-700' },
+      izin: { title: 'Izin', bg: 'bg-amber-100', text: 'text-amber-700' },
+      alfa: { title: 'Alfa / Tanpa Keterangan', bg: 'bg-rose-100', text: 'text-rose-700' }
+    };
+
+    const config = statusConfig[data.status.toLowerCase()] || statusConfig.alfa;
+
+    const badgeEl = document.getElementById('status-badge');
+    badgeEl.className = `inline-block font-semibold px-4 py-1.5 rounded-full text-sm ${config.bg} ${config.text}`;
+    badgeEl.innerText = config.title;
+
+    document.getElementById('waktu-absen').innerText = data.timestamp || '-';
+    document.getElementById('ket-absen').innerText = data.note || '-';
+  }
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('/api/absensi/status-hari-ini')
+    .then(res => {
+      if (!res.ok) throw new Error('Belum ada data presensi');
+      return res.json();
+    })
+    .then(data => renderStatusPage(data))
+    .catch(err => {
+      // Tampilkan pesan jika belum absen / API error
+      document.getElementById('status-badge').className = 'inline-block font-semibold px-4 py-1.5 rounded-full text-sm bg-gray-100 text-gray-600';
+      document.getElementById('status-badge').innerText = 'Belum Absen';
+      document.getElementById('waktu-absen').innerText = '-';
+      document.getElementById('ket-absen').innerText = 'Kamu belum melakukan presensi hari ini.';
+    });
+});
+</script>
+</body>
+</html>
