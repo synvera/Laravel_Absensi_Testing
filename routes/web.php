@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SecretaryAttendanceController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PushNotificationController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -65,6 +66,8 @@ Route::middleware(['auth'])->group(function () {
             'note' => $presensi->note ?? 'Tepat Waktu'
         ]);
     });
+
+    Route::post('/api/save-subscription', [PushNotificationController::class, 'store'])->middleware('auth');
 });
 
 require __DIR__.'/auth.php';

@@ -36,6 +36,7 @@ class User extends Authenticatable
         return $this->hasMany(Attendance::class);
     }
 
+    // <-- TAMBAHKAN INI DI BAHANNYA
     public function pushSubscriptions()
     {
         return $this->hasMany(\App\Models\PushSubscription::class);

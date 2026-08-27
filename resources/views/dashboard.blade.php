@@ -52,6 +52,16 @@
                     </div>
                 </div>
             </div>
+            <div class="p-6 bg-white border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Pengaturan Notifikasi</h3>
+                <p class="mt-1 text-sm text-gray-600">Aktifkan agar Anda tidak lupa melakukan absensi setiap hari.</p>
+                
+                <div class="mt-4">
+                    <button onclick="subscribeUser()" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none">
+                        🔔 Aktifkan Push Notification
+                    </button>
+                </div>
+            </div>
 
         </div>
     </div>
