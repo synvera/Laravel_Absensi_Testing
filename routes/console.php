@@ -45,4 +45,4 @@ Schedule::call(function () {
 
     $webPush->flush();
 
-})->dailyAt('07:30'); // <--- Diatur jam berapa pengiriman otomatisnya
+})->dailyAt('08:10'); // <--- Diatur jam berapa pengiriman otomatisnya
