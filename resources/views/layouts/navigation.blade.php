@@ -33,6 +33,12 @@
                             {{ __('Panel Sekretaris') }}
                         </x-nav-link>
                     @endif
+
+                    @if(Auth::user()->role === 'secretary' || Auth::user()->role === 'sekretaris')
+                        <x-nav-link :href="route('attendance.unsubmitted')" :active="request()->routeIs('attendance.unsubmitted')">
+                            {{ __('Belum Absen') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 

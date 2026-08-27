@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\User;
@@ -127,5 +128,20 @@ class AttendanceController extends Controller
 
         return redirect()->route('attendance.absent.create')
                          ->with('success', 'Keterangan tidak masuk berhasil disimpan!');
+    }
+
+    public function unsubmittedUsers()
+    {
+        // Ambil tanggal hari ini
+        $today = Carbon::today();
+
+        // Cari user yang TIDAK memiliki relasi 'attendances' pada hari ini
+        $usersNotAttended = User::whereDoesntHave('attendances', function ($query) use ($today) {
+            $query->whereDate('created_at', $today);
+        })
+        ->select('id', 'name', 'email', 'created_at')
+        ->get();
+
+        return view('attendance.unsubmitted', compact('usersNotAttended'));
     }
 }

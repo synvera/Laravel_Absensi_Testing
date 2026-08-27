@@ -42,6 +42,9 @@ Route::middleware(['auth'])->group(function () {
     // 6. Route Riwayat Absensi & Status
     Route::get('/attendance/history', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/status-absen', [AttendanceController::class, 'status'])->name('attendance.status');
+    
+    // Tambahkan route ini di sini:
+    Route::get('/belum-absen', [AttendanceController::class, 'unsubmittedUsers'])->name('attendance.unsubmitted');
 
     // 7. Route Khusus Sekretaris (Rekap, Edit Presensi, Hapus Presensi, & Hapus User)
     Route::get('/secretary/attendance', [SecretaryAttendanceController::class, 'index'])->name('secretary.index');
